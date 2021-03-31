@@ -58,7 +58,3 @@ void sendToEmail(BreachType breachType) {
 }
 
 
-int main()
-{
-  return 0;
-}
