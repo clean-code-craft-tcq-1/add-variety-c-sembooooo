@@ -2,7 +2,8 @@
 typedef enum {
   NORMAL,
   TOO_LOW,
-  TOO_HIGH
+  TOO_HIGH,
+  BreachType_TotalNumber
 } BreachType;
 
 BreachType inferBreach(double value, double lowerLimit, double upperLimit);
