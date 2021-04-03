@@ -27,9 +27,10 @@ void sendToController(BreachType breachType) {
 }
 
 char *BreachTypeStr[BreachType_TotalNumber] = {
+  "normal",
   "too low",
   "too high",
-  "normal"
+  
 };
 
 char *BreachTypeToString(BreachType breachType)
