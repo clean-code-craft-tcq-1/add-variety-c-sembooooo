@@ -14,7 +14,7 @@ BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
 
 void checkAndAlert(BatteryCharacter batteryChar, double temperatureInC)
 {
-  assert(batteryChar.Alert ! = 0);
+  assert(batteryChar.Alert != 0);
   BreachType breachType = inferBreach(temperatureInC,
                                       batteryChar.Threshold.lowerLimit,
                                       batteryChar.Threshold.upperLimit);

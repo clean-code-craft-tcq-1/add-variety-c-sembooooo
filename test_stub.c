@@ -19,6 +19,6 @@ int GetCall_AlertTestDouble(void)
 BreachType GetPar_breach(void)
 {
   BreachType ret = par_breach;
-  par_breach = 0;
+  par_breach = NORMAL;
   return ret; 
 }
