@@ -4,11 +4,6 @@
 #include "test_stub.h"
 #include "typewise-alert.h"
 
-
-
-static void CreateBatteryWith
-
-
 TEST_CASE("infers the TOO_LOW breach") {
   REQUIRE(inferBreach(12.0, 20.0, 30.0) == TOO_LOW);
 }
@@ -30,6 +25,6 @@ TEST_CASE("Check if Alert is being called in Check and Alert with inferbreach re
   BatteryCharacter battery;
   battery.Alert = &AlertTestDouble;
   checkAndAlert(battery,20.5);
-  REQUIRE(GetCall_AlertTestDouble() ,1);
-  REQUIRE(GetPar_breach() ,TOO_HIGH);
+  REQUIRE(GetCall_AlertTestDouble() == 1);
+  REQUIRE(GetPar_breach() == TOO_HIGH);
 }
