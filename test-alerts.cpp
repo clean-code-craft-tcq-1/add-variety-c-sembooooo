@@ -3,7 +3,8 @@
 #include "test/catch.hpp"
 #include "test_stub.h"
 #include "typewise-alert.h"
-#include "string.h"
+#include <string.h>
+#include <stdio.h>
 
 TEST_CASE("infers the TOO_LOW breach") {
   REQUIRE(inferBreach(12.0, 20.0, 30.0) == TOO_LOW);
@@ -37,5 +38,9 @@ TEST_CASE("Evaluate BreachTypeToString conversion") {
   REQUIRE(strcmp(BreachTypeToString(TOO_HIGH),"too high") == 0);
   REQUIRE(strcmp(BreachTypeToString(NORMAL),"normal") == 0);
 }
-
-
+TEST_CASE("Evaluate BreachTypeToString conversion") {
+  FILE *fptr = freopen("./file.txt", "w+", stdout);
+  printf("this is atest string");
+  fclose(fptr);
+  REQUIRE(1);
+}
