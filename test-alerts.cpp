@@ -38,7 +38,7 @@ TEST_CASE("Evaluate BreachTypeToString conversion") {
   REQUIRE(strcmp(BreachTypeToString(TOO_HIGH),"too high") == 0);
   REQUIRE(strcmp(BreachTypeToString(NORMAL),"normal") == 0);
 }
-TEST_CASE("Evaluate BreachTypeToString conversion") {
+TEST_CASE("test") {
   FILE *fptr = freopen("./file.txt", "w+", stdout);
   printf("this is atest string");
   fclose(fptr);
