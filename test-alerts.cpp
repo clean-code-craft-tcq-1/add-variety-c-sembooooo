@@ -37,9 +37,9 @@ TEST_CASE("infers the NORMAL : Value equal to upper limit") {
 }
 
 TEST_CASE("Evaluate BreachTypeToString conversion") {
-  REQUIRE(strcmp(BreachTypeToString[TOO_LOW],"too low") == 0);
-  REQUIRE(strcmp(BreachTypeToString[TOO_HIGH],"too high") == 0);
-  REQUIRE(strcmp(BreachTypeToString[NORMAL],"normal") == 0);
+  REQUIRE(strcmp(BreachTypeToString(TOO_LOW),"too low") == 0);
+  REQUIRE(strcmp(BreachTypeToString(TOO_HIGH),"too high") == 0);
+  REQUIRE(strcmp(BreachTypeToString(NORMAL),"normal") == 0);
 }
 
 
