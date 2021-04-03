@@ -1,6 +1,6 @@
 name: Limit complexity
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   complexcheck:
