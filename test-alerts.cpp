@@ -32,10 +32,6 @@ TEST_CASE("Check if Alert is being called in Check and Alert with inferbreach re
   REQUIRE(GetPar_breach() == TOO_HIGH);
 }
 
-TEST_CASE("infers the NORMAL : Value equal to upper limit") {
-  REQUIRE(inferBreach(30.0, 20.0, 30.0) == NORMAL);
-}
-
 TEST_CASE("Evaluate BreachTypeToString conversion") {
   REQUIRE(strcmp(BreachTypeToString(TOO_LOW),"too low") == 0);
   REQUIRE(strcmp(BreachTypeToString(TOO_HIGH),"too high") == 0);
