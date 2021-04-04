@@ -5,6 +5,7 @@
 #include "typewise-alert.h"
 #include <string.h>
 #include <stdio.h>
+#include "testcases.h"
 
 TEST_CASE("infers the TOO_LOW breach") {
   REQUIRE(inferBreach(12.0, 20.0, 30.0) == TOO_LOW);
@@ -43,8 +44,6 @@ TEST_CASE("Evaluate the args passed to printf in sendToEmail") {
 
     REQUIRE(print == printf);
     print = &stub_printfInSendToEmail;
-    BreachTypeToString(TOO_HIGH);
-    //REQUIRE(get_call_printfInSendToEmail() == 1);
-    REQUIRE(strcmp("a.b@c.com",get_args_printfInSendToEmail(0)) == 0);
-    REQUIRE(strcmp("too high",get_args_printfInSendToEmail(1)) == 0);
+    REQUIRE(TestCase_isArg1toPrintfinSendToEmailCorrect() == 1);
+    REQUIRE(TestCase_isArg1toPrintfinSendToEmailCorrect() == 1);
 }
