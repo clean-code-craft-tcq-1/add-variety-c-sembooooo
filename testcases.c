@@ -1,5 +1,6 @@
 #include "test_stub.h"
 #include "typewise-alert.c"
+#include <string.h>
 
 
 int TestCase_isArg1toPrintfinSendToEmailCorrect(void)
