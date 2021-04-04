@@ -69,8 +69,10 @@ int get_call_printfInSendToEmail(void)
 #if 0
 int main()
 {
-  stub_printfInSendToEmail("To: %s\n Hi, the temperature is %s\n","srikar","sana");
+  print = &stub_printfInSendToEmail;
+  sendToEmail(TOO_LOW);
   printf("%s and %s",get_args_printfInSendToEmail(0),get_args_printfInSendToEmail(1));
+  printf("\nand get_call_printfInSendToEmail is %d",get_call_printfInSendToEmail());
   return 0;
 }
 #endif 

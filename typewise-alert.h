@@ -25,4 +25,4 @@ char *BreachTypeToString(BreachType breachType);
 void checkAndAlert(BatteryCharacter batteryChar, double temperatureInC);
 
 void sendToController(BreachType breachType);
-void sendToEmail(BreachType breachType);
+extern void sendToEmail(BreachType breachType);
