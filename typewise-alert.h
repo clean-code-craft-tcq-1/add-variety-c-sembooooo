@@ -19,6 +19,8 @@ typedef struct {
   void (*Alert)(BreachType breach);
 } BatteryCharacter;
 
+extern int (*print)(const char *restrict , ...);
+
 char *BreachTypeToString(BreachType breachType);
 void checkAndAlert(BatteryCharacter batteryChar, double temperatureInC);
 

@@ -1,4 +1,7 @@
 #include "test_stub.h"
+#include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
 
 int Call_AlertTestDouble;
 BreachType par_breach;
@@ -22,3 +25,52 @@ BreachType GetPar_breach(void)
   par_breach = NORMAL;
   return ret; 
 }
+
+
+
+/**
+ * The below function is a testcode to capture the parameters passed to printf.
+ * As of today , only two strings are passed as parameters to the printf hence 
+ * global varaible args_printfInSendToEmail is a multidimensional array.
+ * 
+ * The variable args_printfInSendToEmail  needs to be changed if number of 
+ * parameters passed to printf in SendToEmail() changes.
+ * 
+ */ 
+char args_printfInSendToEmail[2][30];
+int call_printfInSendToEmail;
+
+int stub_printfInSendToEmail(const char *restrict , ...)
+{
+  int arg_count = 2;
+  char *arg;
+  va_list arg_list;
+  va_start(arg_list,restrict);
+  arg = va_arg(arg_list, char *);
+  strcpy(args_printfInSendToEmail[0],arg);
+  arg = va_arg(arg_list, char *);
+  strcpy(args_printfInSendToEmail[1],arg);
+  call_printfInSendToEmail++;
+  return 1;
+}
+
+char* get_args_printfInSendToEmail(int index)
+{
+  return args_printfInSendToEmail[index];
+}
+
+int get_call_printfInSendToEmail(void)
+{
+  int ret =call_printfInSendToEmail;
+  call_printfInSendToEmail = 0;
+  return ret;
+}
+
+#if 0
+int main()
+{
+  stub_printfInSendToEmail("To: %s\n Hi, the temperature is %s\n","srikar","sana");
+  printf("%s and %s",get_args_printfInSendToEmail(0),get_args_printfInSendToEmail(1));
+  return 0;
+}
+#endif 

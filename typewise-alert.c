@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+int (*print)(const char *restrict , ...) = &printf;
+
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
     return TOO_LOW;
@@ -23,7 +25,7 @@ void checkAndAlert(BatteryCharacter batteryChar, double temperatureInC)
 
 void sendToController(BreachType breachType) {
   const unsigned short header = 0xfeed;
-  printf("%x : %x\n", header, breachType);
+  print("%x : %x\n", header, breachType);
 }
 
 char *BreachTypeStr[BreachType_TotalNumber] = {
@@ -43,7 +45,7 @@ void sendToEmail(BreachType breachType) {
   const char* recepient = "a.b@c.com";
   if(breachType != NORMAL)
   {
-    printf("To: %s\n Hi, the temperature is %s\n",
+    print("To: %s\n Hi, the temperature is %s\n",
             recepient,
             BreachTypeToString(breachType));
   }
