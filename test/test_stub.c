@@ -42,7 +42,6 @@ int call_printfInSendToEmail;
 
 int stub_printfInSendToEmail(const char *restrict , ...)
 {
-  int arg_count = 2;
   char *arg;
   va_list arg_list;
   va_start(arg_list,restrict);

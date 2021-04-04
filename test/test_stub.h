@@ -1,9 +1,9 @@
 #pragma once
 #include "typewise-alert.h"
 
-void AlertTestDouble(BreachType breach);
-int GetCall_AlertTestDouble(void);
-BreachType GetPar_breach(void);
+extern void AlertTestDouble(BreachType breach);
+extern int GetCall_AlertTestDouble(void);
+extern BreachType GetPar_breach(void);
 
 extern int stub_printfInSendToEmail(const char *restrict , ...);
 extern char* get_args_printfInSendToEmail(int index);
