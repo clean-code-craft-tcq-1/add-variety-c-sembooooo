@@ -53,7 +53,7 @@ static int IsArg2toPrintfinSendToEmailCorrect(void)
 {
   print = &stub_printfInSendToEmail;
   sendToEmail(TOO_LOW);
-  return !(strcmp(get_args_printfInSendToEmail(2),"too low"));
+  return !(strcmp(get_args_printfInSendToEmail(1),"too low"));
 }
 
 static void TC_EvaluatePrintfinSendToEmail(void)
