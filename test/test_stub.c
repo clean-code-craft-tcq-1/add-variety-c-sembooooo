@@ -40,11 +40,11 @@ BreachType GetPar_breach(void)
 char args_printfInSendToEmail[2][30];
 int call_printfInSendToEmail;
 
-int stub_printfInSendToEmail(const char *restrict , ...)
+int stub_printfInSendToEmail(const char *fmt , ...)
 {
   char *arg;
   va_list arg_list;
-  va_start(arg_list,restrict);
+  va_start(arg_list,fmt);
   arg = va_arg(arg_list, char *);
   strcpy(args_printfInSendToEmail[0],arg);
   arg = va_arg(arg_list, char *);
