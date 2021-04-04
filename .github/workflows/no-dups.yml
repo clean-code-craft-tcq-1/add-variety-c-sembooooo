@@ -1,6 +1,6 @@
 name: No Duplications
 
-on: [push,pullrequest]
+on: [push,pull_request]
 
 jobs:
   nodups:
