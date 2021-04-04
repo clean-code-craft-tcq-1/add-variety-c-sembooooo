@@ -58,9 +58,14 @@ char* get_args_printfInSendToEmail(int index)
   return args_printfInSendToEmail[index];
 }
 
+void Reset_stubs(void)
+{
+  call_printfInSendToEmail = 0;
+}
+
 int get_call_printfInSendToEmail(void)
 {
-  int ret =call_printfInSendToEmail;
+  int ret = call_printfInSendToEmail;
   call_printfInSendToEmail = 0;
   return ret;
 }

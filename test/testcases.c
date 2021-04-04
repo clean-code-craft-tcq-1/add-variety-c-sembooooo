@@ -64,6 +64,13 @@ static void TC_EvaluatePrintfinSendToEmail(void)
   assert(IsArg2toPrintfinSendToEmailCorrect() == 1);
 }
 
+static void TC_SendToEmail_duringNORMAL(void)
+{
+  Reset_stubs();
+  print = &stub_printfInSendToEmail;
+  assert(get_call_printfInSendToEmail() == 0);
+}
+
 
 int main()
 {
@@ -74,5 +81,6 @@ int main()
  TC_AlertcallinCheckandAlert();
  TC_Evaluate_BreachTypeToString_conversion();
  TC_EvaluatePrintfinSendToEmail();
+ TC_SendToEmail_duringNORMAL();
  return 0;
 }
