@@ -46,29 +46,51 @@ static int IsArg1toPrintfinSendToEmailCorrect(void)
 {
   print = &stub_printfInSendToEmail;
   sendToEmail(TOO_LOW);
-  return !(strcmp(get_args_printfInSendToEmail(0),"a.b@c.com"));
+  return !(strcmp(get_args_printfInSendToEmail(0),"To: %s\n Hi, the temperature is %s\n"));
 }
+
 
 static int IsArg2toPrintfinSendToEmailCorrect(void)
 {
   print = &stub_printfInSendToEmail;
   sendToEmail(TOO_LOW);
-  return !(strcmp(get_args_printfInSendToEmail(1),"too low"));
+  return !(strcmp(get_args_printfInSendToEmail(1),"a.b@c.com"));
 }
 
-static void TC_EvaluatePrintfinSendToEmail(void)
+static int IsArg3toPrintfinSendToEmailCorrect(void)
+{
+  print = &stub_printfInSendToEmail;
+  sendToEmail(TOO_LOW);
+  return !(strcmp(get_args_printfInSendToEmail(2),"too low"));
+}
+
+static void TC_EvaluatePrintfParametersinSendToEmail(void)
 {
   assert(print == printf);
   print = &stub_printfInSendToEmail;
   assert(IsArg1toPrintfinSendToEmailCorrect() == 1);
   assert(IsArg2toPrintfinSendToEmailCorrect() == 1);
+  assert(IsArg3toPrintfinSendToEmailCorrect() == 1);
+  print = printf;
 }
 
 static void TC_SendToEmail_duringNORMAL(void)
 {
-  Reset_stubs();
+  Reset_teststubs();
   print = &stub_printfInSendToEmail;
   assert(get_call_printfInSendToEmail() == 0);
+  print = printf;
+}
+
+static void TC_EvaluatePrintfParametersinsendToController(void)
+{
+  Reset_teststubs();
+  print = &stub_printfInSendToController;  
+  sendToController(TOO_LOW);
+  assert(get_call_printfInSendToController()==1);
+  assert(get_arg2_printfInSendToController()== 0xfeed );
+  assert(get_arg3_printfInSendToController() == TOO_LOW);
+  assert(strcmp(get_arg1_printfInSendToController(),"%x : %x\n")==0);
 }
 
 
@@ -80,7 +102,8 @@ int main()
  TC_inferBreach_NORMAL_equalsTOOHIGH();
  TC_AlertcallinCheckandAlert();
  TC_Evaluate_BreachTypeToString_conversion();
- TC_EvaluatePrintfinSendToEmail();
+ TC_EvaluatePrintfParametersinSendToEmail();
  TC_SendToEmail_duringNORMAL();
+ TC_EvaluatePrintfParametersinsendToController();
  return 0;
 }
