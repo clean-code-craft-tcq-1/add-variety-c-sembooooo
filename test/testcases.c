@@ -1,8 +1,15 @@
-#include "test_stub.h"
+#include "Unit_mocks.h"
+#include "Library_Mocks.h"
 #include "../typewise-alert.c"
 #include <assert.h>
 #include <string.h>
 
+
+static void Reset_Stubs(void)
+{
+  Reset_LibraryMockVariables();
+  Reset_UnitMockVariables();
+}
 
 static void TC_inferBreach_TOO_LOW(void) {
   assert(inferBreach(12.0, 20.0, 30.0) == TOO_LOW);
@@ -22,17 +29,13 @@ static void TC_inferBreach_NORMAL_equalsTOOHIGH(void)
   assert(inferBreach(20.0, 20.0, 30.0) == NORMAL);
 }
 
-/**
- * Testcase: 
- * Check if Alert is being called in Check and Alert with inferbreach return value 
- **/
 static void TC_AlertcallinCheckandAlert(void)
 {
   BatteryCharacter battery;
   battery.Alert = &AlertTestDouble;
   checkAndAlert(battery,20.5);
-  assert(GetCall_AlertTestDouble() == 1);
-  assert(GetPar_breach() == TOO_HIGH);
+  assert(GetCallAlertTestDouble() == 1);
+  assert(GetParbreach() == TOO_HIGH);
 }
 
 static void TC_Evaluate_BreachTypeToString_conversion(void)
@@ -42,68 +45,50 @@ static void TC_Evaluate_BreachTypeToString_conversion(void)
   assert(strcmp(BreachTypeToString(NORMAL),"normal") == 0);
 }
 
-static int IsArg1toPrintfinSendToEmailCorrect(void)
+static void TC_Evaluate_sendToController(void)
 {
-  print = &stub_printfInSendToEmail;
-  sendToEmail(TOO_LOW);
-  return !(strcmp(get_args_printfInSendToEmail(0),"To: %s\n Hi, the temperature is %s\n"));
+  Reset_Stubs();
+  BatteryCharacter battery;
+  battery.Alert = &sendToController;
+  checkAndAlert(battery,20.5);
+  assert(GetCallCountToSPICommSendSignal()==1);
+  assert(GetCommand() == (0xfeed+TOO_HIGH));
+  assert(GetDeviceID() == DEVICEID_FAN_ASIC);
 }
 
-
-static int IsArg2toPrintfinSendToEmailCorrect(void)
+static void TC_Evaluate_sendToEmail(void)
 {
-  print = &stub_printfInSendToEmail;
-  sendToEmail(TOO_LOW);
-  return !(strcmp(get_args_printfInSendToEmail(1),"a.b@c.com"));
+  Reset_Stubs();
+  BatteryCharacter battery;
+  battery.Alert = &sendToEmail;
+  checkAndAlert(battery,20.5);
+  assert(strcmp(GetToAddr(),"a.b@c.com")==0);
+  assert(strcmp(GetFromAddr(),"b.c@d.com")==0);
+  assert(strcmp(GetBody(),"Hi, the temperature is too high") ==0);
+  assert(GetCallCountToEmail() ==1);
 }
 
-static int IsArg3toPrintfinSendToEmailCorrect(void)
+static void TC_Evaluate_sendToEmail_DuringNormal(void)
 {
-  print = &stub_printfInSendToEmail;
-  sendToEmail(TOO_LOW);
-  return !(strcmp(get_args_printfInSendToEmail(2),"too low"));
+  Reset_Stubs();
+  BatteryCharacter battery;
+  battery.Threshold.lowerLimit = 20.0;
+  battery.Threshold.upperLimit = 30.0;
+  battery.Alert = &sendToEmail;
+  checkAndAlert(battery,21.0);
+  assert(GetCallCountToEmail() ==0);
 }
-
-static void TC_EvaluatePrintfParametersinSendToEmail(void)
-{
-  assert(print == printf);
-  print = &stub_printfInSendToEmail;
-  assert(IsArg1toPrintfinSendToEmailCorrect() == 1);
-  assert(IsArg2toPrintfinSendToEmailCorrect() == 1);
-  assert(IsArg3toPrintfinSendToEmailCorrect() == 1);
-  print = printf;
-}
-
-static void TC_SendToEmail_duringNORMAL(void)
-{
-  Reset_teststubs();
-  print = &stub_printfInSendToEmail;
-  assert(get_call_printfInSendToEmail() == 0);
-  print = printf;
-}
-
-static void TC_EvaluatePrintfParametersinsendToController(void)
-{
-  Reset_teststubs();
-  print = &stub_printfInSendToController;  
-  sendToController(TOO_LOW);
-  assert(get_call_printfInSendToController()==1);
-  assert(get_arg2_printfInSendToController()== 0xfeed );
-  assert(get_arg3_printfInSendToController() == TOO_LOW);
-  assert(strcmp(get_arg1_printfInSendToController(),"%x : %x\n")==0);
-}
-
 
 int main()
 {
- TC_inferBreach_TOO_LOW(); 
- TC_inferBreach_TOO_HIGH(); 
- TC_inferBreach_NORMAL_equalsTOOLOW();
- TC_inferBreach_NORMAL_equalsTOOHIGH();
- TC_AlertcallinCheckandAlert();
- TC_Evaluate_BreachTypeToString_conversion();
- TC_EvaluatePrintfParametersinSendToEmail();
- TC_SendToEmail_duringNORMAL();
- TC_EvaluatePrintfParametersinsendToController();
+  TC_inferBreach_TOO_LOW(); 
+  TC_inferBreach_TOO_HIGH(); 
+  TC_inferBreach_NORMAL_equalsTOOLOW();
+  TC_inferBreach_NORMAL_equalsTOOHIGH();
+  TC_AlertcallinCheckandAlert();
+  TC_Evaluate_BreachTypeToString_conversion();
+  TC_Evaluate_sendToController();
+  TC_Evaluate_sendToEmail();
+  TC_Evaluate_sendToEmail_DuringNormal();
  return 0;
 }

@@ -1,8 +1,8 @@
 #include "typewise-alert.h"
-#include <stdio.h>
 #include <assert.h>
-
-int (*print)(const char *restrict , ...) = &printf;
+#include <string.h>
+#include "SoCalledEmailLibrary.h"
+#include "SoCalledControllerLibrary.h"
 
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
@@ -25,7 +25,7 @@ void checkAndAlert(BatteryCharacter batteryChar, double temperatureInC)
 
 void sendToController(BreachType breachType) {
   const unsigned short header = 0xfeed;
-  print("%x : %x\n", header, breachType);
+  SPIComm_SendSignal(DEVICEID_FAN_ASIC, header + breachType);
 }
 
 char *BreachTypeStr[BreachType_TotalNumber] = {
@@ -42,11 +42,14 @@ char *BreachTypeToString(BreachType breachType)
 }
 
 void sendToEmail(BreachType breachType) {
-  const char* recepient = "a.b@c.com";
+  EmailContent_t EmailContent;
+  char message_body[100] = "Hi, the temperature is ";
+  EmailContent.toaddr = "a.b@c.com";
+  EmailContent.fromaddr = "b.c@d.com";
   if(breachType != NORMAL)
   {
-    print("To: %s\n Hi, the temperature is %s\n",
-            recepient,
-            BreachTypeToString(breachType));
+    strcat(message_body,BreachTypeToString(breachType));
+    EmailContent.body = message_body;
+    Email(EmailContent);
   }
 }
