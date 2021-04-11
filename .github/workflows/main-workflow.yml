@@ -1,4 +1,4 @@
-name: Build and Run
+name: TEST WITH MOCKS(Build and Run)
 
 on: [push,pull_request]
 

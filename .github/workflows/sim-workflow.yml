@@ -1,0 +1,17 @@
+name: EXEC WITH STUBS
+
+on: [push,pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: build
+      run: gcc -Wall -Wextra -o simexec ./simulation/*.c
+      
+    - name: run
+      run: ./simexec
